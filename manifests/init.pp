@@ -11,11 +11,11 @@ class pentahokettle {
   $subVersion = '5.3'
   $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
   $tmpDest = '/tmp/pdi-ce.zip'
-  $destDir = '/opt/data-integration'
+  $destDir = '/opt'
 
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
-    unless   => "test -f ${destDir}",
+    unless   => "test -f ${destDir}/data-integration",
   } ->
 
   file { $destDir:
@@ -24,12 +24,12 @@ class pentahokettle {
   } ->
 
   exec { 'unzip':
-    command  => "unzip ${tmpDest}",
-    unless   => "test -f ${tmpDest} || test -f ${destDir}",
+    command  => "unzip ${tmpDest} -d ${destDir}",
+    unless   => "test -d ${destDir}/data-integration",
     require  => Exec['wget']
   } ->
 
-  file { "${destDir}/lib/${mySqlConnector}":
+  file { "${destDir}//data-integration/lib/${mySqlConnector}":
     source   => "puppet:///modules/pentahokettle/${mySqlConnector}",
     mode     => '0664',
   }
