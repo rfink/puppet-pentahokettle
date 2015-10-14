@@ -16,24 +16,22 @@ class pentahokettle {
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
     unless   => "test -f ${destDir}",
-  }
-
-  exec { 'unzip':
-    command  => "unzip ${tmpDest}",
-    unless   => "test -f ${tmpDest} || test -f ${destDir}",
-    require  => [Exec['wget'], Package['unzip']]
-  }
+  } ->
 
   file { $destDir:
     ensure   => directory,
     mode     => '0755',
-    require  => Exec['unzip'],
-  }
+  } ->
+
+  exec { 'unzip':
+    command  => "unzip ${tmpDest}",
+    unless   => "test -f ${tmpDest} || test -f ${destDir}",
+    require  => Exec['wget']
+  } ->
 
   file { "${destDir}/lib/${mySqlConnector}":
     source   => "puppet:///modules/pentahokettle/${mySqlConnector}",
     mode     => '0664',
-    require  => File[$destDir],
   }
   
   if ! defined(Package['unzip']) {
