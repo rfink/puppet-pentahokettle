@@ -26,7 +26,7 @@ class pentahokettle {
   exec { 'unzip':
     command  => "unzip ${tmpDest} -d ${destDir}",
     unless   => "test -d ${destDir}/data-integration",
-    require  => Exec['wget']
+    require  => Package['unzip']
   } ->
 
   file { "${destDir}//data-integration/lib/${mySqlConnector}":
