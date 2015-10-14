@@ -5,7 +5,7 @@
 #   include pentahokettle
 class pentahokettle {
   $version = '5.3.0.0-213'
-  $mySqlConnector = 'mysql-connector-java-5.1.34-bin.jar'
+  $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar'
   #$subVersion = regsubst($version, '/^[0-9]+\.[0-9]+(.*)/', '')
   ## regsubst seems buggy. Overriding
   $subVersion = '5.3'
