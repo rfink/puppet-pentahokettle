@@ -19,7 +19,7 @@ class pentahokettle {
   exec { 'unzip':
     command  => "unzip ${tmpDest}",
     unless   => "test -f ${tmpDest} || test -f ${destDir}",
-    require  => Exec['wget'],
+    require  => [Exec['wget'], Package['unzip']]
   }
 
   file { $destDir:
@@ -34,4 +34,11 @@ class pentahokettle {
     mode     => '0664',
     require  => File[$destDir],
   }
+  
+  if ! defined(Package['unzip']) {
+    package { 'unzip':
+        ensure => installed,
+    }
+  }  
+  
 }
