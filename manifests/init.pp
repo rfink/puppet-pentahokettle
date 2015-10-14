@@ -12,6 +12,7 @@ class pentahokettle {
   $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
   $tmpDest = '/tmp/pdi-ce.zip'
   $destDir = '/opt'
+  $javaPackage = 'openjdk-7-jre'
 
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
@@ -26,7 +27,7 @@ class pentahokettle {
   exec { 'unzip':
     command  => "unzip ${tmpDest} -d ${destDir}",
     unless   => "test -d ${destDir}/data-integration",
-    require  => Package['unzip']
+    require  => [Package['unzip'],Package["${$javaPackage}"]]
   } ->
 
   file { "${destDir}//data-integration/lib/${mySqlConnector}":
@@ -38,6 +39,13 @@ class pentahokettle {
     package { 'unzip':
         ensure => installed,
     }
-  }  
+  }
+  
+  if ! defined(Package["${$javaPackage}"]) {
+    package { "${$javaPackage}":
+        ensure => installed,
+    }
+  }
+  
   
 }
