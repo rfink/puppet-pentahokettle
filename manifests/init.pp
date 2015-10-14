@@ -28,7 +28,6 @@ class pentahokettle {
     ensure   => directory,
     mode     => '0755',
     require  => Exec['unzip'],
-    source   => '/tmp/data-integration',
   }
 
   file { "${destDir}/lib/${mySqlConnector}":
