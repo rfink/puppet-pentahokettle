@@ -32,7 +32,7 @@ class pentahokettle {
     require  => [Package['unzip'],Package["${$javaPackage}"]]
   } ->
 
-  file { "${destDir}//data-integration/lib/${mySqlConnector}":
+  file { "${destDir}/data-integration/lib/${mySqlConnector}":
     source   => "puppet:///modules/pentahokettle/${mySqlConnector}",
     mode     => '0664',
   }
