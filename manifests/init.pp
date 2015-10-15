@@ -15,6 +15,7 @@ class pentahokettle (
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
     unless   => "test -d ${destDir}/data-integration",
+    timeout  => 600,
   } ->
 
   file { $destDir:
@@ -25,7 +26,7 @@ class pentahokettle (
   exec { 'unzip':
     command  => "unzip ${tmpDest} -d ${destDir}",
     unless   => "test -d ${destDir}/data-integration",
-    require  => [Package['unzip'],Package["${$javaPackage}"]]
+    require  => [Package['unzip'],Package["${$javaPackage}"]],
   } ->
 
   file { "${destDir}/data-integration/lib/${mySqlConnector}":
@@ -41,7 +42,7 @@ class pentahokettle (
   
   if ! defined(Package["${$javaPackage}"]) {
     package { "${$javaPackage}":
-        ensure => installed,
+      ensure => installed,
     }
   }  
   
