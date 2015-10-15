@@ -4,7 +4,7 @@
 #
 #   include pentahokettle
 class pentahokettle (
-  $version = '5.3.0.0-213',
+  $version = '6.0.0.0-353',
   $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar',
   $tmpDest = '/tmp/pdi-ce.zip',
   $destDir = '/opt/pentaho',
