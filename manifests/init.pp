@@ -11,7 +11,6 @@ class pentahokettle (
   $javaPackage = 'openjdk-7-jre',  
 ){
   $subVersion = regsubst($version, '^([0-9]+\.[0-9])+(.*)', '\1')
-  notify{$subVersion:}
   $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
