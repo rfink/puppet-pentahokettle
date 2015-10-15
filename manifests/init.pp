@@ -3,14 +3,15 @@
 # Usage:
 #
 #   include pentahokettle
-class pentahokettle {
-  $version = '5.3.0.0-213'
-  $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar'
+class pentahokettle (
+  $version = '5.3.0.0-213',
+  $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar',
+  $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download",
+  $tmpDest = '/tmp/pdi-ce.zip',
+  $destDir = '/opt/pentaho',
+  $javaPackage = 'openjdk-7-jre',  
+){
   $subVersion = regsubst($version, '^([0-9]+\.[0-9])+(.*)', '\1')
-  $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
-  $tmpDest = '/tmp/pdi-ce.zip'
-  $destDir = '/opt/pentaho'
-  $javaPackage = 'openjdk-7-jre'
 
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
