@@ -6,7 +6,7 @@
 class pentahokettle {
   $version = '5.3.0.0-213'
   $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar'
-  $subVersionTEST = regsubst($version, '/^[0-9]+\.[0-9]+(.*)/', '')
+  $subVersionTEST = regsubst($version, '/^[0-9]+\.[0-9]', '')
   notify { $version: }
   notify { $subVersionTEST: }
   ## regsubst seems buggy. Overriding
