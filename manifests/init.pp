@@ -9,7 +9,7 @@ class pentahokettle {
   $subVersion = regsubst($version, '^([0-9]+\.[0-9])+(.*)', '\1')
   $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
   $tmpDest = '/tmp/pdi-ce.zip'
-  $destDir = '/opt'
+  $destDir = '/opt/pentaho'
   $javaPackage = 'openjdk-7-jre'
 
   exec { 'wget':
