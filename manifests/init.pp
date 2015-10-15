@@ -16,7 +16,7 @@ class pentahokettle {
 
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
-    unless   => "test -f ${destDir}/data-integration",
+    unless   => "test -d ${destDir}/data-integration",
   } ->
 
   file { $destDir:
@@ -45,7 +45,6 @@ class pentahokettle {
     package { "${$javaPackage}":
         ensure => installed,
     }
-  }
-  
+  }  
   
 }
