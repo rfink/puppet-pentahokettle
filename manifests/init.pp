@@ -8,7 +8,7 @@ class pentahokettle (
   $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar',
   $tmpDest = '/tmp/pdi-ce.zip',
   $destDir = '/opt/pentaho',
-  $javaPackage = 'openjdk-8-jre',  
+  $javaPackage = 'openjdk-8-jre',
 ){
   $subVersion = regsubst($version, '^([0-9]+\.[0-9])+(.*)', '\1')
   $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
@@ -26,24 +26,24 @@ class pentahokettle (
   exec { 'unzip':
     command  => "unzip ${tmpDest} -d ${destDir}",
     unless   => "test -d ${destDir}/data-integration",
-    require  => [Package['unzip'],Package["${$javaPackage}"]],
+    require  => [Package['unzip'],Package["${javaPackage}"]],
   } ->
 
   file { "${destDir}/data-integration/lib/${mySqlConnector}":
     source   => "puppet:///modules/pentahokettle/${mySqlConnector}",
     mode     => '0664',
   }
-  
+
   if ! defined(Package['unzip']) {
     package { 'unzip':
         ensure => installed,
     }
   }
-  
-  if ! defined(Package["${$javaPackage}"]) {
-    package { "${$javaPackage}":
+
+  if ! defined(Package["${javaPackage}"]) {
+    package { "${javaPackage}":
       ensure => installed,
     }
-  }  
-  
+  }
+
 }
