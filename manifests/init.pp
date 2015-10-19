@@ -8,7 +8,7 @@ class pentahokettle (
   $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar',
   $tmpDest = '/tmp/pdi-ce.zip',
   $destDir = '/opt/pentaho',
-  $javaPackage = 'openjdk-7-jre',  
+  $javaPackage = 'openjdk-8-jre',  
 ){
   $subVersion = regsubst($version, '^([0-9]+\.[0-9])+(.*)', '\1')
   $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
