@@ -3,35 +3,47 @@
 # Usage:
 #
 #   include pentahokettle
-class pentahokettle {
-  $version = '5.3.0.0-213'
-  $mySqlConnector = 'mysql-connector-java-5.1.34-bin.jar'
-  $subVersion = regsubst($version, '/^[0-9]+\.[0-9]+(.*)/', '')
+class pentahokettle (
+  $version = '6.0.0.0-353',
+  $mySqlConnector = 'mysql-connector-java-5.1.36-bin.jar',
+  $tmpDest = '/tmp/pdi-ce.zip',
+  $destDir = '/opt/pentaho',
+  $javaPackage = 'openjdk-8-jre',
+){
+  $subVersion = regsubst($version, '^([0-9]+\.[0-9])+(.*)', '\1')
   $url = "http://sourceforge.net/projects/pentaho/files/Data%20Integration/${subVersion}/pdi-ce-${version}.zip/download"
-  $tmpDest = '/tmp/pdi-ce.zip'
-  $destDir = '/opt/data-integration'
-
   exec { 'wget':
     command  => "wget ${url} -O ${tmpDest}",
-    unless   => "test -f ${destDir}",
-  }
-
-  exec { 'unzip':
-    command  => "unzip ${tmpDest}",
-    unless   => "test -f ${tmpDest} || test -f ${destDir}",
-    require  => Exec['wget'],
-  }
+    unless   => "test -d ${destDir}/data-integration",
+    timeout  => 600,
+  } ->
 
   file { $destDir:
     ensure   => directory,
     mode     => '0755',
-    require  => Exec['unzip'],
-    source   => '/tmp/data-integration',
-  }
+  } ->
 
-  file { "${destDir}/lib/${mySqlConnector}":
+  exec { 'unzip':
+    command  => "unzip ${tmpDest} -d ${destDir}",
+    unless   => "test -d ${destDir}/data-integration",
+    require  => [Package['unzip'],Package[$javaPackage]],
+  } ->
+
+  file { "${destDir}/data-integration/lib/${mySqlConnector}":
     source   => "puppet:///modules/pentahokettle/${mySqlConnector}",
     mode     => '0664',
-    require  => File[$destDir],
   }
+
+  if ! defined(Package['unzip']) {
+    package { 'unzip':
+        ensure => installed,
+    }
+  }
+
+  if ! defined(Package[$javaPackage]) {
+    package { $javaPackage:
+      ensure => installed,
+    }
+  }
+
 }
