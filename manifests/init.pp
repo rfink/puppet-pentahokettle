@@ -26,7 +26,7 @@ class pentahokettle (
   exec { 'unzip':
     command  => "unzip ${tmpDest} -d ${destDir}",
     unless   => "test -d ${destDir}/data-integration",
-    require  => [Package['unzip'],Package["${javaPackage}"]],
+    require  => [Package['unzip'],Package[$javaPackage]],
   } ->
 
   file { "${destDir}/data-integration/lib/${mySqlConnector}":
@@ -40,8 +40,8 @@ class pentahokettle (
     }
   }
 
-  if ! defined(Package["${javaPackage}"]) {
-    package { "${javaPackage}":
+  if ! defined(Package[$javaPackage]) {
+    package { $javaPackage:
       ensure => installed,
     }
   }
